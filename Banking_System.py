@@ -1,11 +1,17 @@
 # Banking System Project
 
 # Task:
-# - Create a simple BankAccount class that a customer will use.
+# - Create simple account class for a customer to use.
 
 # Think:
 # - I want to have my banking system such that each person can visit the bank and use a given service.
 # - Typically, each person can go to their account to take money.
+
+# Key Notes:
+# - I created classes for all entities based on my original UML diagram, and tried to keep everything as simple as possible.
+# - This is as simple as I could make it so far w/o overengineering it. I have not tested it, but the code does appear to be correctly written.
+# - The Person class has a built-in method so that it can interact with different accounts and services.
+# - I was originally able to create a git repository within Pycharm, but when I tried to commit changes inside Pycharm, it did not let me. Thus, I manually made changes on the Github website.
 
 class Account:
 
@@ -164,9 +170,9 @@ class Hizonhood(Service):
     def invest(self, stock_ticker, amount):
         # Create dictionary
         if stock_ticker in self.investment_portfolio.keys():
-            self.investment_portfolio[stock_ticker] = amount
-        else:
             self.investment_portfolio[stock_ticker] += amount
+        else:
+            self.investment_portfolio[stock_ticker] = amount
         for key, value in self.investment_portfolio.items():
             return "${} has been invested into {}".format(round(value, 2), key)
 
