@@ -1,16 +1,11 @@
 # Banking System Project
 
 # Task:
-# - Create simple account class for a customer to use.
+# - Create a simple BankAccount class that a customer will use.
 
 # Think:
 # - I want to have my banking system such that each person can visit the bank and use a given service.
 # - Typically, each person can go to their account to take money.
-
-
-# Key Notes:
-# - I attempted to write all the classes in the way that I perceived it should be developed.
-# - The Person class has methods to interact with subclasses of Account and Service classes.
 
 class Account:
 
@@ -169,9 +164,9 @@ class Hizonhood(Service):
     def invest(self, stock_ticker, amount):
         # Create dictionary
         if stock_ticker in self.investment_portfolio.keys():
-            self.investment_portfolio[stock_ticker] += amount
-        else:
             self.investment_portfolio[stock_ticker] = amount
+        else:
+            self.investment_portfolio[stock_ticker] += amount
         for key, value in self.investment_portfolio.items():
             return "${} has been invested into {}".format(round(value, 2), key)
 
