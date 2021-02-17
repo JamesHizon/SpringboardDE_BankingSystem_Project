@@ -100,8 +100,8 @@ class Customer(Person):
 
     # THINK: How to inherit all attributes from base/parent class,
     # while also adding additional attributes?
-    def __init__(self, firstname, lastname, address, accounts_available=None):
-        Person.__init__(self, firstname, lastname, address)
+    def __init__(self, firstname, lastname, address, cash_available, accounts_available=None):
+        Person.__init__(self, firstname, lastname, address, cash_available)
         self.accounts_available = accounts_available
 
     def get_customer_accounts(self):
@@ -136,8 +136,8 @@ class Customer(Person):
 
 class Employee(Person):
 
-    def __init__(self, firstname, lastname, address, salary=0):
-        Person.__init__(firstname, lastname, address)
+    def __init__(self, firstname, lastname, address, cash_available, salary=0):
+        Person.__init__(firstname, lastname, address, cash_available)
         self.salary = salary
 
     def increase_salary(self):
@@ -163,7 +163,8 @@ class Service:
 class Hizonhood(Service):
 
     # Initialize empty investment portfolio as a list
-    def __init__(self, investor_balance, investment_portfolio={}):
+    def __init__(self, services_list, investor_balance, investment_portfolio={}):
+        Service.__init__(services_list)
         self.investor_balance = investor_balance
         self.investment_portfolio = investment_portfolio
 
@@ -179,7 +180,8 @@ class Hizonhood(Service):
 
 class CreditCard(Service):
 
-    def __init__(self, name, account_no, expiration_date, cvv, balance):
+    def __init__(self, services_list, name, account_no, expiration_date, cvv, balance):
+        Service.__init__(services_list)
         self.name = name
         self.account_no = account_no
         self.expiration_date = expiration_date
@@ -196,9 +198,90 @@ class CreditCard(Service):
 
 class Loan(Service):
 
-    def __init__(self, loan_amount):
+    def __init__(self, services_list, loan_amount):
+        Service.__init__(services_list)
         self.loan_amount = loan_amount
 
     def take_loan(self, customer_balance):
         customer_balance -= self.loan_amount
         return f"Loan of {self.loan_amount} has been taken!\nCustomer now has {round(customer_balance, 2)} left."
+
+
+# Next:
+# - How do we want to set up our classes s.t. we will store data into a database?
+
+# Use SQLAlchemy:
+
+# from sqlalchemy import create_engine, Column, Integer, Float, String, ForeignKey
+# from sqlalchemy.ext.declarative import declarative_base
+# from sqlalchemy.orm import sessionmaker, relationship
+#
+# Base = declarative_base()
+#
+#
+# class Customer(Base):
+#     __tablename__ = "Customer"
+#
+#     id = Column('id', Integer, primary_key=True)
+#     FirstName = Column('FirstName', String, unique=True)
+#     LastName = Column('LastName', String, unique=True)
+#     Address = Column('Address', String, unique=True)
+#     CheckingAccountAvailable = Column('CheckingAccountAvailable', String, unique=True)
+#     SavingsAccountAvailable = Column('SavingsAccountAvailable', String, unique=True)
+#
+#
+# class Employee(Base):
+#     __tablename__ = "Employee"
+#
+#     id = Column('id', Integer, primary_key=True)
+#     FirstName = Column('FirstName', String, unique=True)
+#     LastName = Column('LastName', String, unique=True)
+#     Address = Column('Address', String, unique=True)
+#     Salary = Column('Salary', String, unique=True)
+#
+#
+# class CheckingAccount(Base):
+#     __tablename__ = "CheckingAccount"
+#
+#     id = Column('id', Integer, primary_key=True)
+#     PersonId = Column('PersonId', Integer, foreign_key=True)
+#     FirstName = Column('FirstName', String, unique=True)
+#     LastName = Column('LastName', String, unique=True)
+#     Balance = Column('Balance', Float, unique=True)
+#
+#
+# class SavingsAccount(Base):
+#     __tablename__ = "SavingsAccount"
+#
+#     id = Column('id', Integer, primary_key=True)
+#     PersonId = Column('PersonId', Integer, foreign_key=True)
+#     FirstName = Column('FirstName', String, unique=True)
+#     LastName = Column('LastName', String, unique=True)
+#     Balance = Column('Balance', Float, unique=True)
+#
+#
+# engine = create_engine('sqlite:///:memory:', echo=True) # use sqlite to run in-memory
+# Base.metadata.create_all(bind=engine)
+# Session = sessionmaker(bind=engine)
+#
+# session = Session()
+#
+# session.close()
+
+# Driver Code
+
+# John_Smith = Customer("John", "Smith", "100 ABC Street", 100, "CheckingAccount")
+# John_Smith.firstname
+# 'John'
+# John_Smith.lastname
+# 'Smith'
+# John_Smith.visit_bank()
+# Select account type:
+# Type 1 for checking account and 2 for savings account.>? 1
+# Welcome to James' Deposit & Withdrawal Machine!
+# <__main__.CheckingAccount object at 0x10b9b78e0>
+# John_Smith.visit_bank()
+# Select account type:
+# Type 1 for checking account and 2 for savings account.>? 2
+# Welcome to James' Deposit & Withdrawal Machine!
+# <__main__.SavingsAccount object at 0x10b9b73a0>
