@@ -100,8 +100,8 @@ class Customer(Person):
 
     # THINK: How to inherit all attributes from base/parent class,
     # while also adding additional attributes?
-    def __init__(self, firstname, lastname, address, accounts_available=None):
-        Person.__init__(self, firstname, lastname, address)
+    def __init__(self, firstname, lastname, address, cash_available, accounts_available=None):
+        Person.__init__(self, firstname, lastname, address, cash_available)
         self.accounts_available = accounts_available
 
     def get_customer_accounts(self):
@@ -136,8 +136,8 @@ class Customer(Person):
 
 class Employee(Person):
 
-    def __init__(self, firstname, lastname, address, salary=0):
-        Person.__init__(firstname, lastname, address)
+    def __init__(self, firstname, lastname, address, cash_available, salary=0):
+        Person.__init__(firstname, lastname, address, cash_available)
         self.salary = salary
 
     def increase_salary(self):
@@ -212,58 +212,77 @@ class Loan(Service):
 
 # Use SQLAlchemy:
 
-from sqlalchemy import create_engine, Column, Integer, Float, String, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, relationship
+# from sqlalchemy import create_engine, Column, Integer, Float, String, ForeignKey
+# from sqlalchemy.ext.declarative import declarative_base
+# from sqlalchemy.orm import sessionmaker, relationship
+#
+# Base = declarative_base()
+#
+#
+# class Customer(Base):
+#     __tablename__ = "Customer"
+#
+#     id = Column('id', Integer, primary_key=True)
+#     FirstName = Column('FirstName', String, unique=True)
+#     LastName = Column('LastName', String, unique=True)
+#     Address = Column('Address', String, unique=True)
+#     CheckingAccountAvailable = Column('CheckingAccountAvailable', String, unique=True)
+#     SavingsAccountAvailable = Column('SavingsAccountAvailable', String, unique=True)
+#
+#
+# class Employee(Base):
+#     __tablename__ = "Employee"
+#
+#     id = Column('id', Integer, primary_key=True)
+#     FirstName = Column('FirstName', String, unique=True)
+#     LastName = Column('LastName', String, unique=True)
+#     Address = Column('Address', String, unique=True)
+#     Salary = Column('Salary', String, unique=True)
+#
+#
+# class CheckingAccount(Base):
+#     __tablename__ = "CheckingAccount"
+#
+#     id = Column('id', Integer, primary_key=True)
+#     PersonId = Column('PersonId', Integer, foreign_key=True)
+#     FirstName = Column('FirstName', String, unique=True)
+#     LastName = Column('LastName', String, unique=True)
+#     Balance = Column('Balance', Float, unique=True)
+#
+#
+# class SavingsAccount(Base):
+#     __tablename__ = "SavingsAccount"
+#
+#     id = Column('id', Integer, primary_key=True)
+#     PersonId = Column('PersonId', Integer, foreign_key=True)
+#     FirstName = Column('FirstName', String, unique=True)
+#     LastName = Column('LastName', String, unique=True)
+#     Balance = Column('Balance', Float, unique=True)
+#
+#
+# engine = create_engine('sqlite:///:memory:', echo=True) # use sqlite to run in-memory
+# Base.metadata.create_all(bind=engine)
+# Session = sessionmaker(bind=engine)
+#
+# session = Session()
+#
+# session.close()
 
-Base = declarative_base()
+# Driver Code
 
+# John_Smith = Customer("John", "Smith", "100 ABC Street", 100, "CheckingAccount")
+# John_Smith.firstname
+# 'John'
+# John_Smith.lastname
+# 'Smith'
+# John_Smith.visit_bank()
+# Select account type:
+# Type 1 for checking account and 2 for savings account.>? 1
+# Welcome to James' Deposit & Withdrawal Machine!
+# <__main__.CheckingAccount object at 0x10b9b78e0>
+# John_Smith.visit_bank()
+# Select account type:
+# Type 1 for checking account and 2 for savings account.>? 2
+# Welcome to James' Deposit & Withdrawal Machine!
+# <__main__.SavingsAccount object at 0x10b9b73a0>
 
-class Customer(Base):
-    __tablename__ = "Customer"
-
-    id = Column('id', Integer, primary_key=True)
-    FirstName = Column('FirstName', String, unique=True)
-    LastName = Column('LastName', String, unique=True)
-    Address = Column('Address', String, unique=True)
-    CheckingAccountAvailable = Column('CheckingAccountAvailable', String, unique=True)
-    SavingsAccountAvailable = Column('SavingsAccountAvailable', String, unique=True)
-
-
-class Employee(Base):
-    __tablename__ = "Employee"
-
-    id = Column('id', Integer, primary_key=True)
-    FirstName = Column('FirstName', String, unique=True)
-    LastName = Column('LastName', String, unique=True)
-    Address = Column('Address', String, unique=True)
-    Salary = Column('Salary', String, unique=True)
-
-
-class CheckingAccount(Base):
-    __tablename__ = "CheckingAccount"
-
-    id = Column('id', Integer, primary_key=True)
-    PersonId = Column('PersonId', Integer, foreign_key=True)
-    FirstName = Column('FirstName', String, unique=True)
-    LastName = Column('LastName', String, unique=True)
-    Balance = Column('Balance', Float, unique=True)
-
-
-class SavingsAccount(Base):
-    __tablename__ = "SavingsAccount"
-
-    id = Column('id', Integer, primary_key=True)
-    PersonId = Column('PersonId', Integer, foreign_key=True)
-    FirstName = Column('FirstName', String, unique=True)
-    LastName = Column('LastName', String, unique=True)
-    Balance = Column('Balance', Float, unique=True)
-
-
-engine = create_engine('sqlite:///:memory:', echo=True) # use sqlite to run in-memory
-Base.metadata.create_all(bind=engine)
-Session = sessionmaker(bind=engine)
-
-session = Session()
-
-session.close()
