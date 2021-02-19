@@ -1,5 +1,8 @@
 # Banking System Project
 
+import json
+
+
 class Account:
 
     def __init__(self):
@@ -96,26 +99,18 @@ class Person:
         elif account_type_input == 2:
             account = SavingsAccount()
         return account
-    # # Create method to use a specified service - MAY NEED TO PLACE INSIDE THE ACCOUNT CLASS
-    # def use_service(self):
-    #     """
-    #     Logic: Requests for user input and returns a specified service as an instance of one of the different
-    #     service classes.
-    #     """
-    #     # Ask for which service to use?
-    #     service_input = int(input("Select service:\n1 for Hizonhood\n2 for Credit Card\n3 for Loan"))
-    #     if service_input == 1:
-    #         service = Hizonhood()
-    #     elif service_input == 2:
-    #         service = CreditCard()
-    #     elif service_input == 3:
-    #         service = Loan()
-    #     return service
 
 
 class Customer(Person):
-    # THINK: How to inherit all attributes from base/parent class,
-    # while also adding additional attributes?
+    """
+    Customer class will inherit from Person and Base class.
+    The Base class will be used to drive the SQLAlchemy data storage solution and create a
+    Customer table.
+
+    We want to basically have this customer table work s.t. each time a customer logs into the bank account,
+    it will request a PIN code or some unique identifier.
+    """
+
     def __init__(self, firstname, lastname, address, cash_available, accounts_available=None):
         Person.__init__(self, firstname, lastname, address, cash_available)
         self.accounts_available = accounts_available
@@ -150,6 +145,7 @@ class Customer(Person):
 # Next: Create visit_bank and user_service methods, along with creating the CreditCard and Loan classes.
 # - Maybe... we should simply create the other classes first.
 class Employee(Person):
+
     def __init__(self, firstname, lastname, address, cash_available, salary=0):
         Person.__init__(firstname, lastname, address, cash_available)
         self.salary = salary
@@ -191,6 +187,14 @@ class Hizonhood(Service):
         for key, value in self.investment_portfolio.items():
             print("${}0 has been invested into {}".format(float(value), key))
 
+    def to_json(self):
+        """
+        Using dictionary, we want to dump the data into a JSON object.
+        """
+        with open("investment_data_file.json", "w") as write_file:
+            json.dump(self.investment_portfolio, write_file)
+        return "New JSON file created!"
+
 
 class CreditCard(Service):
 
@@ -220,15 +224,7 @@ class Loan(Service):
 # Next:
 # - How do we want to set up our classes s.t. we will store data into a database?
 
-# Use SQLAlchemy:
 
-# from sqlalchemy import create_engine, Column, Integer, Float, String, ForeignKey
-# from sqlalchemy.ext.declarative import declarative_base
-# from sqlalchemy.orm import sessionmaker, relationship
-#
-# Base = declarative_base()
-#
-#
 # class Customer(Base):
 #     __tablename__ = "Customer"
 #
@@ -302,3 +298,5 @@ class Loan(Service):
 # 1
 # 80
 # use_hizonhood.invest("DOGE", 20)
+# use_hizonhood.invest("GOD", 40)
+# use_hizonhood.to_json()
