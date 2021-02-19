@@ -1,18 +1,5 @@
 # Banking System Project
 
-# Task:
-# - Create simple account class for a customer to use.
-
-# Think:
-# - I want to have my banking system such that each person can visit the bank and use a given service.
-# - Typically, each person can go to their account to take money.
-
-# Key Notes:
-# - I created classes for all entities based on my original UML diagram, and tried to keep everything as simple as possible.
-# - This is as simple as I could make it so far w/o overengineering it. I have not tested it, but the code does appear to be correctly written.
-# - The Person class has a built-in method so that it can interact with different accounts and services.
-# - I was originally able to create a git repository within Pycharm, but when I tried to commit changes inside Pycharm, it did not let me. Thus, I manually made changes on the Github website.
-
 class Account:
 
     def __init__(self):
@@ -22,8 +9,9 @@ class Account:
     def withdraw(self):
         amount = float(input("Enter amount to withdraw: "))
         if amount > self.balance:
-            return "Insufficient balance"
-        self.balance -= amount
+            print("Insufficient balance")
+        else:
+            self.balance -= amount
         return self.balance
 
     def deposit(self):
@@ -32,10 +20,41 @@ class Account:
         return self.balance
 
     def display(self):
-        print("\nAvailable Balance: ", self.balance)
+        print("Available Balance: ", self.balance)
 
+    def use_service(self):
+        """
+        Logic: Requests for user input and returns a specified service as an instance of one of the different
+        service classes.
 
-# The following are child classes of BankAccount:
+        Note:
+        - It may not be as high quality, but we just want a simple working solution.
+
+        return: service as an object to be used
+        """
+        # Ask for which service to use?
+        service_input = int(input("Select service:\n1 for Hizonhood\n2 for Credit Card\n3 for Loan"))
+        if service_input == 1:
+            # Request investor_balance/deposit money from account to service:
+            investor_balance = float(input("Enter amount to deposit into Hizonhood: "))
+            self.balance -= investor_balance
+            service = Hizonhood(investor_balance)
+        elif service_input == 2:
+            # Request info:
+            name = input("Enter name: ")
+            account_no = int(input("Enter account no: "))
+            expiration_date = input("Enter expiration date: ")
+            cvv = input("Enter cvv: ")
+            balance = float(input("Enter balance: "))
+            self.balance -= balance
+            service = CreditCard(name, account_no, expiration_date, cvv, balance)
+        elif service_input == 3:
+            # Request loan amount:
+            loan_amount = float(input("Enter loan amount: "))
+            self.balance -= loan_amount
+            service = Loan(loan_amount)
+        return service
+
 
 class CheckingAccount(Account):
     """
@@ -44,7 +63,7 @@ class CheckingAccount(Account):
     ca_fee = 1
 
     def withdrawal_fee(self, fee=ca_fee):
-        return super(CheckingAccount, self).withdraw() + fee
+        return super(CheckingAccount, self).withdraw() - fee
 
 
 class SavingsAccount(Account):
@@ -66,7 +85,6 @@ class Person:
         self.address = address
         self.cash_available = cash_available
 
-    # Create method to visit bank account
     def visit_bank(self):
         """
         Want to ask whether person wants to use a checking or a savings account.
@@ -78,26 +96,24 @@ class Person:
         elif account_type_input == 2:
             account = SavingsAccount()
         return account
-
-    # Create method to use a specified service
-    def use_service(self):
-        """
-        Logic: Requests for user input and returns a specified service as an instance of one of the different
-        service classes.
-        """
-        # Ask for which service to use?
-        service_input = int(input("Select service:\n1 for Hizonhood\n2 for Credit Card\n3 for Loan"))
-        if service_input == 1:
-            service = Hizonhood()
-        elif service_input == 2:
-            service = CreditCard()
-        elif service_input == 3:
-            service = Loan()
-        return service
+    # # Create method to use a specified service - MAY NEED TO PLACE INSIDE THE ACCOUNT CLASS
+    # def use_service(self):
+    #     """
+    #     Logic: Requests for user input and returns a specified service as an instance of one of the different
+    #     service classes.
+    #     """
+    #     # Ask for which service to use?
+    #     service_input = int(input("Select service:\n1 for Hizonhood\n2 for Credit Card\n3 for Loan"))
+    #     if service_input == 1:
+    #         service = Hizonhood()
+    #     elif service_input == 2:
+    #         service = CreditCard()
+    #     elif service_input == 3:
+    #         service = Loan()
+    #     return service
 
 
 class Customer(Person):
-
     # THINK: How to inherit all attributes from base/parent class,
     # while also adding additional attributes?
     def __init__(self, firstname, lastname, address, cash_available, accounts_available=None):
@@ -133,9 +149,7 @@ class Customer(Person):
 
 # Next: Create visit_bank and user_service methods, along with creating the CreditCard and Loan classes.
 # - Maybe... we should simply create the other classes first.
-
 class Employee(Person):
-
     def __init__(self, firstname, lastname, address, cash_available, salary=0):
         Person.__init__(firstname, lastname, address, cash_available)
         self.salary = salary
@@ -150,38 +164,37 @@ class Employee(Person):
 
 class Service:
 
-    # Initialize Service to be an empty list:
-    def __init__(self, services_list=[]):
-        self.services_list = services_list
+    def __init__(self):
+        self.services_list = "Hizonhood\nLoan\nCreditCard"
 
     def display_all_services(self):
-        return self.services_list
+        # Print upcoming services to be available
+        print("Upcoming services available soon: Webull\nTD Ameritrade\nVenmo\nPayPal")
+        return "Coming Soon: ".format(self.services_list)
 
 
 # I am trying to think about how to write code for each service:
-
 class Hizonhood(Service):
-
-    # Initialize empty investment portfolio as a list
-    def __init__(self, services_list, investor_balance, investment_portfolio={}):
-        Service.__init__(services_list)
+    # Initialize empty investment portfolio as a dictionary
+    def __init__(self, investor_balance):
         self.investor_balance = investor_balance
-        self.investment_portfolio = investment_portfolio
+        self.investment_portfolio = {}
 
     def invest(self, stock_ticker, amount):
+        # Subtract from investor balance
+        self.investor_balance -= amount
         # Create dictionary
         if stock_ticker in self.investment_portfolio.keys():
             self.investment_portfolio[stock_ticker] += amount
         else:
             self.investment_portfolio[stock_ticker] = amount
         for key, value in self.investment_portfolio.items():
-            return "${} has been invested into {}".format(round(value, 2), key)
+            print("${}0 has been invested into {}".format(float(value), key))
 
 
 class CreditCard(Service):
 
-    def __init__(self, services_list, name, account_no, expiration_date, cvv, balance):
-        Service.__init__(services_list)
+    def __init__(self, name, account_no, expiration_date, cvv, balance):
         self.name = name
         self.account_no = account_no
         self.expiration_date = expiration_date
@@ -197,15 +210,12 @@ class CreditCard(Service):
 
 
 class Loan(Service):
-
-    def __init__(self, services_list, loan_amount):
-        Service.__init__(services_list)
+    def __init__(self, loan_amount):
         self.loan_amount = loan_amount
 
     def take_loan(self, customer_balance):
         customer_balance -= self.loan_amount
         return f"Loan of {self.loan_amount} has been taken!\nCustomer now has {round(customer_balance, 2)} left."
-
 
 # Next:
 # - How do we want to set up our classes s.t. we will store data into a database?
@@ -275,7 +285,7 @@ class Loan(Service):
 # 'John'
 # John_Smith.lastname
 # 'Smith'
-# John_Smith.visit_bank()
+# bank_visit = John_Smith.visit_bank()
 # Select account type:
 # Type 1 for checking account and 2 for savings account.>? 1
 # Welcome to James' Deposit & Withdrawal Machine!
@@ -286,3 +296,9 @@ class Loan(Service):
 # Welcome to James' Deposit & Withdrawal Machine!
 # <__main__.SavingsAccount object at 0x10b9b73a0>
 
+# bank_visit.deposit()
+# 100
+# use_hizonhood = bank_visit.use_service()
+# 1
+# 80
+# use_hizonhood.invest("DOGE", 20)
