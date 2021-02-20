@@ -8,6 +8,11 @@ class Account:
     def __init__(self):
         self.balance = 0
         print("Welcome to James' Deposit & Withdrawal Machine!")
+        self.first_name = input("Enter first name: ")
+        self.last_name = input("Enter last name: ")
+        self.name = first_name + last_name
+        self.address = input("Enter address: ")
+        self.json_dict = {"Name": self.name, "Address": self.address, "Balance": self.balance}
 
     def withdraw(self):
         amount = float(input("Enter amount to withdraw: "))
@@ -15,11 +20,13 @@ class Account:
             print("Insufficient balance")
         else:
             self.balance -= amount
+        self.json_dict["Balance"] = self.balance
         return self.balance
 
     def deposit(self):
         amount = float(input("Enter amount to deposit: "))
         self.balance += amount
+        self.json_dict["Balance"] = self.balance
         return self.balance
 
     def display(self):
@@ -33,6 +40,10 @@ class Account:
         Note:
         - It may not be as high quality, but we just want a simple working solution.
 
+        THINK:
+        - How to store data into JSON afterwards without creating a separate to_json method.
+        - Maybe, just create a from_JSON method.
+
         return: service as an object to be used
         """
         # Ask for which service to use?
@@ -41,6 +52,7 @@ class Account:
             # Request investor_balance/deposit money from account to service:
             investor_balance = float(input("Enter amount to deposit into Hizonhood: "))
             self.balance -= investor_balance
+            self.json_dict["Balance"] = self.balance
             service = Hizonhood(investor_balance)
         elif service_input == 2:
             # Request info:
@@ -50,23 +62,47 @@ class Account:
             cvv = input("Enter cvv: ")
             balance = float(input("Enter balance: "))
             self.balance -= balance
+            self.json_dict["Balance"] = self.balance
             service = CreditCard(name, account_no, expiration_date, cvv, balance)
         elif service_input == 3:
             # Request loan amount:
             loan_amount = float(input("Enter loan amount: "))
             self.balance -= loan_amount
+            self.json_dict["Balance"] = self.balance
             service = Loan(loan_amount)
         return service
 
 
 class CheckingAccount(Account):
     """
-    Simple CheckingAccount class with method that withdraws based on fee amount.
+    Simple CheckingAccount class with method that withdraws based on fee amount and stores data into JSON file.
     """
     ca_fee = 1
 
     def withdrawal_fee(self, fee=ca_fee):
-        return super(CheckingAccount, self).withdraw() - fee
+        """
+        Method: Based on fee amount, will
+        """
+        w_fee = super(CheckingAccount, self).withdraw() - fee
+        super(CheckingAccount, self).json_dict["Balance"] = w_fee
+        return w_fee
+
+    def ca_to_json(self):
+        """
+        Method: Create a JSON file to store savings account data.
+        """
+        with open("checking_account_data.json", "w") as checking_act_file:
+            json.dump(super(CheckingAccount, self).json_dict, checking_act_file)
+        return "New JSON file created!"
+
+    def ca_from_json(self):
+        """
+        Method: Read JSON file as dictionary object.
+        """
+        with open("checking_account_data.json", "r") as checking_act_file:
+            ca_json_dict = json.load(checking_act_file)
+        print("JSON file has been read!")
+        return ca_json_dict
 
 
 class SavingsAccount(Account):
@@ -77,7 +113,29 @@ class SavingsAccount(Account):
     interest_rate = 0.1
 
     def check_savings(self, rate=interest_rate):
-        return super(SavingsAccount, self).balance * rate
+        """
+        This method will check savings and be used to update JSON object inherited from the Account class.
+        """
+        savings = super(SavingsAccount, self).balance * rate
+        super(SavingsAccount, self).json_dict["Savings"] = savings
+        return savings
+
+    def sa_to_json(self):
+        """
+        Method: Create a JSON file to store savings account data.
+        """
+        with open("savings_account_data.json", "w") as savings_act_file:
+            json.dump(super(SavingsAccount, self).json_dict, savings_act_file)
+        return "JSON File has been created!"
+
+    def sa_from_json(self):
+        """
+        Method: Read JSON file as dictionary object.
+        """
+        with open("savings_account_data.json", "r") as savings_act_file:
+            sa_json_dict = json.load(savings_act_file)
+        print("JSON file has been read!")
+        return sa_json_dict
 
 
 class Person:
@@ -87,26 +145,53 @@ class Person:
         self.lastname = lastname
         self.address = address
         self.cash_available = cash_available
+        self.json_dict = {"Name": self.firstname + self.lastname,
+                          "Address": self.address,
+                          "Cash": self.cash_available}
 
     def visit_bank(self):
         """
         Want to ask whether person wants to use a checking or a savings account.
         Logic: Based on user input, visit bank to use either a checking or savings account.
+
+        Also, this method will ask for PIN Code unique to the Person.
         """
+
         account_type_input = int(input("Select account type:\nType 1 for checking account and 2 for savings account."))
         if account_type_input == 1:
-            account = CheckingAccount()
+            if "PIN" not in self.json_dict.keys():
+                print("You currently do not have a Checking Account.\n"
+                      "A new checking account will be created automatically for you.\n")
+                checking_account_pin_setup = input("Set up PIN Code: ")
+                self.json_dict["PIN"] = checking_account_pin_setup
+            else:
+                checking_account_pin = input("Enter PIN Code: ")
+                if self.json_dict["PIN"] == checking_account_pin:
+                    account = CheckingAccount()
+                else:
+                    print("Invalid PIN Code.")
         elif account_type_input == 2:
-            account = SavingsAccount()
+            if "PIN" not in self.json_dict.keys():
+                print("You currently do not have a Savings Account.\n"
+                      "A new savings account will be created automatically for you.\n")
+                savings_account_pin_setup = input("Set up PIN Code: ")
+                self.json_dict["PIN"] = savings_account_pin_setup
+            else:
+                savings_account_pin = input("Enter PIN Code: ")
+                if self.json_dict["PIN"] == savings_account_pin:
+                    account = SavingsAccount()
+                else:
+                    print("Invalid PIN Code.")
         return account
+
+    def set_cash_available(self, new_cash_amount):
+        self.cash_available = new_cash_amount
+        self.json_dict["Cash"] = self.cash_available
+        return self.cash_available
 
 
 class Customer(Person):
     """
-    Customer class will inherit from Person and Base class.
-    The Base class will be used to drive the SQLAlchemy data storage solution and create a
-    Customer table.
-
     We want to basically have this customer table work s.t. each time a customer logs into the bank account,
     it will request a PIN code or some unique identifier.
     """
@@ -128,35 +213,53 @@ class Customer(Person):
         and returns a list of accounts after asking.
         :return: List of user accounts
         """
-        # Initialize empty account list:
         accounts_list = []
-        # Ask for user input:
         act_input = input("Enter user account: ")
         accounts_list.append(act_input)
-        # Request for more:
-        more_input = input("Would you like to add more input?\nType 'Y' for Yes and 'N' for no.")
+        more_input = input("Would you like to add more input?\nType 'Y' for Yes and 'N' for No.")
         while more_input == 'Y':
             act_input = input("Enter user account: ")
             accounts_list.append(act_input)
         self.accounts_available = accounts_list
+        # List to dict
+        super(Customer, self).json_dict["Accounts"] = accounts_list
         return "Customer accounts set!"
 
+    def customer_to_json(self):
+        """
+        Note that the we use super class to inherit the json_dict attribute from Accounts
+        to dump data into customer_file as our object.
+        """
+        with open("customer_data.json", "w") as customer_file:
+            json.dump(super(Customer, self).json_dict, customer_file)
+        return "New JSON file created!"
 
-# Next: Create visit_bank and user_service methods, along with creating the CreditCard and Loan classes.
-# - Maybe... we should simply create the other classes first.
+    def customer_from_json(self):
+        with open("customer_data.json", "r") as customer_file:
+            data = json.load(customer_file)
+        print("JSON file has been read!")
+        return data
+
+
 class Employee(Person):
 
     def __init__(self, firstname, lastname, address, cash_available, salary=0):
         Person.__init__(firstname, lastname, address, cash_available)
         self.salary = salary
+        super(Employee, self).json_dict["Salary"] = self.salary
 
     def increase_salary(self):
         increase_amount = float(input("Enter salary amount for increasing: "))
         self.salary += increase_amount
+        super(Employee, self).json_dict["Salary"] = self.salary
         return "New salary: {}".format(self.salary)
 
+    def employee_to_json(self):
+        pass
 
-# Three services: CreditCard, Loan, and Hizonhood (Remake of Robinhood).
+    def employee_from_json(self):
+        pass
+
 
 class Service:
 
@@ -166,20 +269,23 @@ class Service:
     def display_all_services(self):
         # Print upcoming services to be available
         print("Upcoming services available soon: Webull\nTD Ameritrade\nVenmo\nPayPal")
-        return "Coming Soon: ".format(self.services_list)
+        return "Available services: ".format(self.services_list)
 
 
-# I am trying to think about how to write code for each service:
 class Hizonhood(Service):
-    # Initialize empty investment portfolio as a dictionary
+    """
+    Simple Investment Portfolio service class which will track how much money is invested
+    (will not record gains or losses, however, for the sake of simplicity.)
+    """
     def __init__(self, investor_balance):
         self.investor_balance = investor_balance
         self.investment_portfolio = {}
+        self.json_dict = {"Investor Balance": self.investor_balance,
+                          "Investor Portfolio": self.investment_portfolio}
 
     def invest(self, stock_ticker, amount):
-        # Subtract from investor balance
         self.investor_balance -= amount
-        # Create dictionary
+        self.json_dict["Investor Balance"] = self.investor_balance
         if stock_ticker in self.investment_portfolio.keys():
             self.investment_portfolio[stock_ticker] += amount
         else:
@@ -187,13 +293,21 @@ class Hizonhood(Service):
         for key, value in self.investment_portfolio.items():
             print("${}0 has been invested into {}".format(float(value), key))
 
-    def to_json(self):
+    def hizon_to_json(self):
         """
         Using dictionary, we want to dump the data into a JSON object.
         """
         with open("investment_data_file.json", "w") as write_file:
-            json.dump(self.investment_portfolio, write_file)
+            json.dump(self.json_dict, write_file)
         return "New JSON file created!"
+
+    def hizon_from_json(self):
+        """
+        Retrieve JSON file and set to self.investment_portfolio.
+        """
+        with open("investment_data_file.json", "r") as read_file:
+            self.json_dict = json.load(read_file)
+        return "JSON file has been read!"
 
 
 class CreditCard(Service):
@@ -204,75 +318,42 @@ class CreditCard(Service):
         self.expiration_date = expiration_date
         self.cvv = cvv
         self.balance = balance
+        self.json_dict = {"Name": self.name,
+                          "Account": self.account_no,
+                          "Expiration Date": self.expiration_date,
+                          "CVV": self.cvv,
+                          "Balance": self.balance}
 
     def make_purchase(self, purchase_amount):
         if purchase_amount > self.balance:
             print("Insufficient amount on card.")
         else:
             self.balance -= purchase_amount
+            self.json_dict["Balance"] = self.balance
             return "Purchase has been made."
+
+    def credit_to_json(self):
+        with open("credit_card_data.json", "w") as credit_card_file:
+            json.dump(self.json_dict, credit_card_file)
+        return "New JSON file created!"
+
+    def credit_from_json(self):
+        with open("credit_card_data.json", "r") as credit_card_file:
+            data = json.load(credit_card_file)
+        print("JSON file has been loaded!")
+        return data
 
 
 class Loan(Service):
-    def __init__(self, loan_amount):
+
+    def __init__(self, loan_amount, consumer_name):
+        self.name = consumer_name
         self.loan_amount = loan_amount
+        self.json_dict = {"Name": self.name, "Loan Amount": self.loan_amount}
 
     def take_loan(self, customer_balance):
         customer_balance -= self.loan_amount
         return f"Loan of {self.loan_amount} has been taken!\nCustomer now has {round(customer_balance, 2)} left."
-
-# Next:
-# - How do we want to set up our classes s.t. we will store data into a database?
-
-
-# class Customer(Base):
-#     __tablename__ = "Customer"
-#
-#     id = Column('id', Integer, primary_key=True)
-#     FirstName = Column('FirstName', String, unique=True)
-#     LastName = Column('LastName', String, unique=True)
-#     Address = Column('Address', String, unique=True)
-#     CheckingAccountAvailable = Column('CheckingAccountAvailable', String, unique=True)
-#     SavingsAccountAvailable = Column('SavingsAccountAvailable', String, unique=True)
-#
-#
-# class Employee(Base):
-#     __tablename__ = "Employee"
-#
-#     id = Column('id', Integer, primary_key=True)
-#     FirstName = Column('FirstName', String, unique=True)
-#     LastName = Column('LastName', String, unique=True)
-#     Address = Column('Address', String, unique=True)
-#     Salary = Column('Salary', String, unique=True)
-#
-#
-# class CheckingAccount(Base):
-#     __tablename__ = "CheckingAccount"
-#
-#     id = Column('id', Integer, primary_key=True)
-#     PersonId = Column('PersonId', Integer, foreign_key=True)
-#     FirstName = Column('FirstName', String, unique=True)
-#     LastName = Column('LastName', String, unique=True)
-#     Balance = Column('Balance', Float, unique=True)
-#
-#
-# class SavingsAccount(Base):
-#     __tablename__ = "SavingsAccount"
-#
-#     id = Column('id', Integer, primary_key=True)
-#     PersonId = Column('PersonId', Integer, foreign_key=True)
-#     FirstName = Column('FirstName', String, unique=True)
-#     LastName = Column('LastName', String, unique=True)
-#     Balance = Column('Balance', Float, unique=True)
-#
-#
-# engine = create_engine('sqlite:///:memory:', echo=True) # use sqlite to run in-memory
-# Base.metadata.create_all(bind=engine)
-# Session = sessionmaker(bind=engine)
-#
-# session = Session()
-#
-# session.close()
 
 # Driver Code
 
@@ -298,5 +379,5 @@ class Loan(Service):
 # 1
 # 80
 # use_hizonhood.invest("DOGE", 20)
-# use_hizonhood.invest("GOD", 40)
+# use_hizonhood.invest("BTC", 40)
 # use_hizonhood.to_json()
