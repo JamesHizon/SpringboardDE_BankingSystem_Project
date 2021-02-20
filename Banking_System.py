@@ -164,6 +164,7 @@ class Person:
                       "A new checking account will be created automatically for you.\n")
                 checking_account_pin_setup = input("Set up PIN Code: ")
                 self.json_dict["PIN"] = checking_account_pin_setup
+                account = CheckingAccount()
             else:
                 checking_account_pin = input("Enter PIN Code: ")
                 if self.json_dict["PIN"] == checking_account_pin:
@@ -176,6 +177,7 @@ class Person:
                       "A new savings account will be created automatically for you.\n")
                 savings_account_pin_setup = input("Set up PIN Code: ")
                 self.json_dict["PIN"] = savings_account_pin_setup
+                account = SavingsAccount()
             else:
                 savings_account_pin = input("Enter PIN Code: ")
                 if self.json_dict["PIN"] == savings_account_pin:
