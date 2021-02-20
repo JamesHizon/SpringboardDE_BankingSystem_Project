@@ -23,47 +23,86 @@ The following is an example of how to run this code, where I incorporate all of 
 
 IN:
 John_Smith = Customer("John", "Smith", "100 ABC Street", 100, "CheckingAccount")
+
 bank_visit = John_Smith.visit_bank()
+
 OUT:
 Select account type:
+
 Type 1 for checking account and 2 for savings account.>? 1
+
 You currently do not have a Checking Account.
+
 A new checking account will be created automatically for you.
+
 Set up PIN Code: >? 1234
+
 Welcome to James' Deposit & Withdrawal Machine!
+
 Enter first name: >? John
+
 Enter last name: >? Smith
+
 Enter address: >? 123 hizon ave
+
 IN:
+
 bank_visit.deposit()
+
 OUT:
+
 Enter amount to deposit: >? 100
+
 100.0
+
 IN:
+
 use_hizonhood = bank_visit.use_service()
+
 Select service:
 1 for Hizonhood
 2 for Credit Card
 3 for Loan>? 1
+
 Enter amount to deposit into Hizonhood: >? 80
+
 Enter Investor name: >? John
+
 IN:
+
 use_hizonhood.investment_portfolio
+
 OUT:
+
 {}
+
 IN:
+
 use_hizonhood.json_dict
+
 OUT:
+
 {'Investor Name': 'John', 'Investor Balance': 80.0, 'Investor Portfolio': {}}
+
 IN:
+
 use_hizonhood.invest("DOGE", 20)
+
+OUT:
+
 {'Investor Name': 'John', 'Investor Balance': 60.0, 'Investor Portfolio': {'DOGE': 20}}
+
 {'DOGE': 20}
-OUT:
+
+
 $20.00 has been invested into DOGE
+
 IN:
+
 use_hizonhood.hizon_to_json()
+
 OUT:
+
 'New JSON file created!'
 
 The last part of the code will create a JSON file called "investment_data_file.json" with the following contents:
