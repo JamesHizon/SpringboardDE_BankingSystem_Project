@@ -8,9 +8,9 @@ class Account:
     def __init__(self):
         self.balance = 0
         print("Welcome to James' Deposit & Withdrawal Machine!")
-        self.first_name = input("Enter first name: ")
-        self.last_name = input("Enter last name: ")
-        self.name = first_name + last_name
+        self.firstname = input("Enter first name: ")
+        self.lastname = input("Enter last name: ")
+        self.name = firstname + lastname
         self.address = input("Enter address: ")
         self.json_dict = {"Name": self.name, "Address": self.address, "Balance": self.balance}
 
@@ -257,10 +257,15 @@ class Employee(Person):
         return "New salary: {}".format(self.salary)
 
     def employee_to_json(self):
-        pass
+        with open("employee_data.json", "w") as employee_file:
+            json.dump(super(Employee, self).json_dict, employee_file)
+        return "New JSON file created!"
 
     def employee_from_json(self):
-        pass
+        with open("employee_data.json", "r") as employee_file:
+            data = json.load(employee_file)
+        print("JSON file has been read!")
+        return data
 
 
 class Service:
