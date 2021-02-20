@@ -34,28 +34,18 @@ class Account:
 
     def use_service(self):
         """
-        Logic: Requests for user input and returns a specified service as an instance of one of the different
+        Method: Requests for user input and returns a specified service as an instance of one of the different
         service classes.
-
-        Note:
-        - It may not be as high quality, but we just want a simple working solution.
-
-        THINK:
-        - How to store data into JSON afterwards without creating a separate to_json method.
-        - Maybe, just create a from_JSON method.
 
         return: service as an object to be used
         """
-        # Ask for which service to use?
         service_input = int(input("Select service:\n1 for Hizonhood\n2 for Credit Card\n3 for Loan"))
         if service_input == 1:
-            # Request investor_balance/deposit money from account to service:
             investor_balance = float(input("Enter amount to deposit into Hizonhood: "))
             self.balance -= investor_balance
             self.json_dict["Balance"] = self.balance
             service = Hizonhood(investor_balance)
         elif service_input == 2:
-            # Request info:
             name = input("Enter name: ")
             account_no = int(input("Enter account no: "))
             expiration_date = input("Enter expiration date: ")
@@ -65,7 +55,6 @@ class Account:
             self.json_dict["Balance"] = self.balance
             service = CreditCard(name, account_no, expiration_date, cvv, balance)
         elif service_input == 3:
-            # Request loan amount:
             loan_amount = float(input("Enter loan amount: "))
             self.balance -= loan_amount
             self.json_dict["Balance"] = self.balance
@@ -81,7 +70,7 @@ class CheckingAccount(Account):
 
     def withdrawal_fee(self, fee=ca_fee):
         """
-        Method: Based on fee amount, will
+        Method: Based on fee amount, will withdraw with fee subtracted from balance.
         """
         w_fee = super(CheckingAccount, self).withdraw() - fee
         super(CheckingAccount, self).json_dict["Balance"] = w_fee
@@ -151,10 +140,7 @@ class Person:
 
     def visit_bank(self):
         """
-        Want to ask whether person wants to use a checking or a savings account.
-        Logic: Based on user input, visit bank to use either a checking or savings account.
-
-        Also, this method will ask for PIN Code unique to the Person.
+        Method: Will request for account type and PIN code setup for registering or login.
         """
 
         account_type_input = int(input("Select account type:\nType 1 for checking account and 2 for savings account."))
@@ -301,9 +287,6 @@ class Hizonhood(Service):
         else:
             self.investment_portfolio[stock_ticker] = amount
             self.json_dict["Investor Portfolio"] = self.investment_portfolio
-        # Add print statements to try and debug
-        print(self.json_dict)
-        print(self.investment_portfolio)
         for key, value in self.investment_portfolio.items():
             print("${}0 has been invested into {}".format(float(value), key))
 
