@@ -10,7 +10,7 @@ class Account:
         print("Welcome to James' Deposit & Withdrawal Machine!")
         self.firstname = input("Enter first name: ")
         self.lastname = input("Enter last name: ")
-        self.name = firstname + lastname
+        self.name = self.firstname + self.lastname
         self.address = input("Enter address: ")
         self.json_dict = {"Name": self.name, "Address": self.address, "Balance": self.balance}
 
@@ -285,9 +285,11 @@ class Hizonhood(Service):
     (will not record gains or losses, however, for the sake of simplicity.)
     """
     def __init__(self, investor_balance):
+        self.name = input("Enter Investor name: ")
         self.investor_balance = investor_balance
         self.investment_portfolio = {}
-        self.json_dict = {"Investor Balance": self.investor_balance,
+        self.json_dict = {"Investor Name": self.name,
+                          "Investor Balance": self.investor_balance,
                           "Investor Portfolio": self.investment_portfolio}
 
     def invest(self, stock_ticker, amount):
@@ -295,8 +297,13 @@ class Hizonhood(Service):
         self.json_dict["Investor Balance"] = self.investor_balance
         if stock_ticker in self.investment_portfolio.keys():
             self.investment_portfolio[stock_ticker] += amount
+            self.json_dict["Investor Portfolio"] = self.investment_portfolio
         else:
             self.investment_portfolio[stock_ticker] = amount
+            self.json_dict["Investor Portfolio"] = self.investment_portfolio
+        # Add print statements to try and debug
+        print(self.json_dict)
+        print(self.investment_portfolio)
         for key, value in self.investment_portfolio.items():
             print("${}0 has been invested into {}".format(float(value), key))
 
@@ -365,26 +372,9 @@ class Loan(Service):
 # Driver Code
 
 # John_Smith = Customer("John", "Smith", "100 ABC Street", 100, "CheckingAccount")
-# John_Smith.firstname
-# 'John'
-# John_Smith.lastname
-# 'Smith'
 # bank_visit = John_Smith.visit_bank()
-# Select account type:
-# Type 1 for checking account and 2 for savings account.>? 1
-# Welcome to James' Deposit & Withdrawal Machine!
-# <__main__.CheckingAccount object at 0x10b9b78e0>
-# John_Smith.visit_bank()
-# Select account type:
-# Type 1 for checking account and 2 for savings account.>? 2
-# Welcome to James' Deposit & Withdrawal Machine!
-# <__main__.SavingsAccount object at 0x10b9b73a0>
-
 # bank_visit.deposit()
-# 100
 # use_hizonhood = bank_visit.use_service()
-# 1
-# 80
 # use_hizonhood.invest("DOGE", 20)
 # use_hizonhood.invest("BTC", 40)
-# use_hizonhood.to_json()
+# use_hizonhood.hizon_to_json()
