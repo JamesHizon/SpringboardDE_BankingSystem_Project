@@ -1,9 +1,10 @@
-# SpringboardDE_BankingSystem_Project
-Banking System Code using OOP
+# Springboard Data Engineering Banking System Mini-Project
+
+### Banking System Code using OOP
 
 The following code includes three parent classes: Account, Person and Services
 
-Customer and Employee classes will inherit from the Person class, the
+The Customer and Employee classes will inherit from the Person class, the
 CheckingAccount and SavingsAccount classes will inherit from the Account class,
 and Hizonhood, CreditCard and Loan classes will inherit from the services class.
 
