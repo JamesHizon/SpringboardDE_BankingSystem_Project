@@ -1,8 +1,12 @@
 # Springboard Data Engineering Banking System Mini-Project
 
-### Banking System Code using OOP
+https://gfycat.com/firmfelineape
 
-The following code includes three parent classes: Account, Person and Services
+<iframe src='https://gfycat.com/ifr/FirmFelineApe' frameborder='0' scrolling='no' allowfullscreen width='640' height='412'></iframe><p> <a href="https://gfycat.com/firmfelineape">via Gfycat</a></p>
+
+<div style='position:relative; padding-bottom:calc(57.50% + 44px)'><iframe src='https://gfycat.com/ifr/FirmFelineApe' frameborder='0' scrolling='no' width='100%' height='100%' style='position:absolute;top:0;left:0;' allowfullscreen></iframe></div><p> <a href="https://gfycat.com/firmfelineape">via Gfycat</a></p>
+
+The following Python script includes three parent classes: Account, Person and Services
 
 The Customer and Employee classes will inherit from the Person class, the
 CheckingAccount and SavingsAccount classes will inherit from the Account class,
