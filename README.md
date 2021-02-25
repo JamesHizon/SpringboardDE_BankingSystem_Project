@@ -3,11 +3,10 @@
 ![img.png](https://www.bcsconsulting.com/wp-content/uploads/2018/12/bank-system-tile.png)
 
 
-The following Python script includes three parent classes: Account, Person and Services
-
-The Customer and Employee classes will inherit from the Person class, the
-CheckingAccount and SavingsAccount classes will inherit from the Account class,
-and Hizonhood, CreditCard and Loan classes will inherit from the services class.
+The following Python script includes three parent classes to simulate a simple banking system:
+1. Person (Child classes: Customer, Employee)
+2. Account (Child classes: CheckingAccount, SavingsAccount)
+3. Services (Child classes: Hizonhood, CreditCard, Loan)
 
 ### Step-By-Step Explanation of example which uses each base class (Python file)
 
