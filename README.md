@@ -1,6 +1,6 @@
 # Springboard Data Engineering Banking System Mini-Project
 
-![img.png](https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.bcsconsulting.com%2Fblog%2Fcore-banking-systems-hint-at-why-banks-find-agile-a-challenge%2F&psig=AOvVaw3Peq9eXkb1mUzcGc8zPHym&ust=1614297748929000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNCCqfjdg-8CFQAAAAAdAAAAABAD)
+![img.png](https://www.bcsconsulting.com/wp-content/uploads/2018/12/bank-system-tile.png)
 
 
 The following Python script includes three parent classes: Account, Person and Services
