@@ -1,10 +1,6 @@
 # Springboard Data Engineering Banking System Mini-Project
 
-https://gfycat.com/firmfelineape
-
-<iframe src='https://gfycat.com/ifr/FirmFelineApe' frameborder='0' scrolling='no' allowfullscreen width='640' height='412'></iframe><p> <a href="https://gfycat.com/firmfelineape">via Gfycat</a></p>
-
-<div style='position:relative; padding-bottom:calc(57.50% + 44px)'><iframe src='https://gfycat.com/ifr/FirmFelineApe' frameborder='0' scrolling='no' width='100%' height='100%' style='position:absolute;top:0;left:0;' allowfullscreen></iframe></div><p> <a href="https://gfycat.com/firmfelineape">via Gfycat</a></p>
+![img.png](img.png)
 
 The following Python script includes three parent classes: Account, Person and Services
 
@@ -12,9 +8,7 @@ The Customer and Employee classes will inherit from the Person class, the
 CheckingAccount and SavingsAccount classes will inherit from the Account class,
 and Hizonhood, CreditCard and Loan classes will inherit from the services class.
 
-I created methods to store and extract data in JSON format within each class.
-
-A working example of interacting with each class can be detailed as follows:
+### Step-By-Step Explanation of example which uses each base class (Python file)
 
 1) Create an instance of the Person class.
 2) Call the ".visit_bank()" method as an object and account to be used.
@@ -24,14 +18,34 @@ A working example of interacting with each class can be detailed as follows:
 6) Call the ".invest()" method and specify stock_ticker and investment amount.
 7) Call the ".hizon_to_json()" method to store data in JSON format.
 
-The following is an example of how to run this code, where I incorporate all of the main classes (Account, Service and Person):
+### Command Line Interface User Interaction (requires Python Version 3)
 
-IN:
+First, call each file after switching to correct directory.
+
+```
+cd src
+python3 Account.py
+python3 Person.py
+python3 Service.py
+```
+
+Next, call the file in test file in the test folder as follows:
+
+```
+cd test
+python3 Banking_system_test.py
+```
+
+If this does not work, try manually writing the following code after opening up Python version 3.
+
+```
+python3
+```
+
+```
 John_Smith = Customer("John", "Smith", "100 ABC Street", 100, "CheckingAccount")
-
 bank_visit = John_Smith.visit_bank()
 
-OUT:
 Select account type:
 
 Type 1 for checking account and 2 for savings account.>? 1
@@ -50,17 +64,11 @@ Enter last name: >? Smith
 
 Enter address: >? 123 hizon ave
 
-IN:
-
 bank_visit.deposit()
-
-OUT:
 
 Enter amount to deposit: >? 100
 
 100.0
-
-IN:
 
 use_hizonhood = bank_visit.use_service()
 
@@ -73,45 +81,30 @@ Enter amount to deposit into Hizonhood: >? 80
 
 Enter Investor name: >? John
 
-IN:
-
 use_hizonhood.investment_portfolio
-
-OUT:
 
 {}
 
-IN:
-
 use_hizonhood.json_dict
-
-OUT:
 
 {'Investor Name': 'John', 'Investor Balance': 80.0, 'Investor Portfolio': {}}
 
-IN:
-
 use_hizonhood.invest("DOGE", 20)
-
-OUT:
 
 {'Investor Name': 'John', 'Investor Balance': 60.0, 'Investor Portfolio': {'DOGE': 20}}
 
 {'DOGE': 20}
 
-
 $20.00 has been invested into DOGE
-
-IN:
 
 use_hizonhood.hizon_to_json()
 
-OUT:
-
 'New JSON file created!'
+```
 
 The last part of the code will create a JSON file called "investment_data_file.json" with the following contents:
 
+```
 {"Investor Name": "John", "Investor Balance": 60.0, "Investor Portfolio": {"DOGE": 20}}
-
+```
 
