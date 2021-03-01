@@ -1,6 +1,10 @@
 # After running Account.py, Person.py and Service.py files,
 # we will run this code to test if it works.
 
+import Account
+import Person
+import Service
+
 # Driver Code
 
 John_Smith = Customer("John", "Smith", "100 ABC Street", 100, "CheckingAccount")
