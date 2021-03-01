@@ -1,9 +1,17 @@
 # After running Account.py, Person.py and Service.py files,
 # we will run this code to test if it works.
 
+# The following is our main files (base classes) to be imported:
+
 import Account
 import Person
 import Service
+
+# In order to work with driver (test) code, we also need to import the child classes associated with the base class.
+
+from Account import CheckingAccount, SavingsAccount
+from Person import Customer, Employee
+from Service import Hizonhood, Loan, CreditCard
 
 # Driver Code
 
