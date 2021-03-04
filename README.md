@@ -8,103 +8,110 @@ The following Python script includes three parent classes to simulate a simple b
 2. Account (Child classes: CheckingAccount, SavingsAccount)
 3. Services (Child classes: Hizonhood, CreditCard, Loan)
 
-### Step-By-Step Explanation of example which uses each base class (Python file)
-
-1) Create an instance of the Person class.
-2) Call the ".visit_bank()" method as an object and account to be used.
-3) The program will ask to set up a PIN Code if an account has not yet been registered. Otherwise, it will simply ask for PIN Code (stored inside dictionary).
-4) Call the ".deposit()" method to have a certain balance (say $100).
-5) Call the ".use_service()" method to choose a specified service as an object. It will request for amount to be used.
-6) Call the ".invest()" method and specify stock_ticker and investment amount.
-7) Call the ".hizon_to_json()" method to store data in JSON format.
 
 ### Command Line Interface User Interaction (requires Python Version 3)
 
-First, call each file after switching to correct directory.
+First, call each file after switching to src directory inside terminal.
 
 ```
 cd src
-python3 Account.py
-python3 Person.py
-python3 Service.py
-```
-
-Next, call the file in test file in the test folder as follows:
-
-```
-cd test
 python3 Banking_system_test.py
 ```
 
-If this does not work, try manually writing the following code after opening up Python version 3.
+A Python Script will then ask for the user to provide input. 
+The following includes full implementation of all the main base classes 
+with a corresponding child class:
+
 
 ```
-python3
-```
-
-```
-John_Smith = Customer("John", "Smith", "100 ABC Street", 100, "CheckingAccount")
-bank_visit = John_Smith.visit_bank()
-
+(venv) (base) jameshizon@Jamess-MBP src % python3 Banking_system_test.py                         
+Enter first name: James
+Enter last name: Hizon
+Enter address: 123 Code Avenue
+Are you a Customer or an Employee?
+Enter 1 for 'Customer'
+Enter 2 for 'Employee'
+1
+Currently, you have no cash available.
+Enter 'Y' if this is the case.
+Otherwise, enter new cash amount: Y
+Would you like to get or set customer accounts?
+Enter 1 to get customer accounts
+Enter 2 to set customer accounts
+Enter 3 to extract customer data from JSON file (if exists)
+Enter 4 to perform none of the listed actions: 
+4
+Did not perform an action.
+Would you like to visit the bank?
+Enter 'Y' for Yes and 'N' for No: Y
 Select account type:
-
-Type 1 for checking account and 2 for savings account.>? 1
-
+Type 1 for checking account and 2 for savings account.1
 You currently do not have a Checking Account.
-
 A new checking account will be created automatically for you.
 
-Set up PIN Code: >? 1234
-
+Set up PIN Code: 1234
 Welcome to James' Deposit & Withdrawal Machine!
-
-Enter first name: >? John
-
-Enter last name: >? Smith
-
-Enter address: >? 123 hizon ave
-
-bank_visit.deposit()
-
-Enter amount to deposit: >? 100
-
-100.0
-
-use_hizonhood = bank_visit.use_service()
-
+Enter first name: James
+Enter last name: Hizon
+Enter address: 123 Code Avenue
+Person has chosen to visit the bank!
+Enter number for specified action:
+Enter 1 to withdraw
+Enter 2 to deposit
+Enter 3 to display current balance: 2
+Enter amount to deposit: 1000
+Would you like to perform another action?
+Enter 'Y' for another action and 'N' to stop using the banking system: Y
+Enter number for specified action:
+Enter 1 to withdraw
+Enter 2 to deposit
+Enter 3 to display balance
+Enter 4 to use a service: 3
+Available Balance:  1000.0
+Would you like to perform another action?
+Enter 'Y' for another action and 'N' to stop using the banking system.Y
+Enter number for specified action:
+Enter 1 to withdraw
+Enter 2 to deposit
+Enter 3 to display balance
+Enter 4 to use a service: 4
 Select service:
 1 for Hizonhood
 2 for Credit Card
-3 for Loan>? 1
+3 for Loan1
+Enter amount to deposit into Hizonhood: 500
+Enter Investor name: James Hizon
+Would you like to perform any additional service requests?
+Enter 'Y' for Yes and 'N' to stop using services: Y
+Would you like to invest using Hizonhood?
+Type 'Y' for Yes and 'N' for No: Y
+Select 1 for Hizonhood as follows.
+Select service:
+1 for Hizonhood
+2 for Credit Card
+3 for Loan1
+Enter amount to deposit into Hizonhood: 500
+Enter Investor name: James Hizon
+Enter stock ticker: BTC 
+Enter stock investment amount: 250
+$250.00 has been invested into BTC
+Would you like to make a purchase using your credit card?
+Enter 'Y' for Yes, otherwise, type anything: No
+No purchase made.
+Would you like to take out a loan?
+Enter 'Y' for Yes, otherwise, type anything: No
+Would you like to perform any additional service requests?
+Enter 'Y' for Yes and 'N' to stop using services: No
+Would you like to perform another action?
+Enter 'Y' for another action and 'N' to stop using the banking system.N
 
-Enter amount to deposit into Hizonhood: >? 80
-
-Enter Investor name: >? John
-
-use_hizonhood.investment_portfolio
-
-{}
-
-use_hizonhood.json_dict
-
-{'Investor Name': 'John', 'Investor Balance': 80.0, 'Investor Portfolio': {}}
-
-use_hizonhood.invest("DOGE", 20)
-
-{'Investor Name': 'John', 'Investor Balance': 60.0, 'Investor Portfolio': {'DOGE': 20}}
-
-{'DOGE': 20}
-
-$20.00 has been invested into DOGE
-
-use_hizonhood.hizon_to_json()
-
-'New JSON file created!'
 ```
 
 The last part of the code will create a JSON file called "investment_data_file.json" with the following contents:
 
 ```
-{"Investor Name": "John", "Investor Balance": 60.0, "Investor Portfolio": {"DOGE": 20}}
+{"Investor Name": "James Hizon", "Investor Balance": 250.0, "Investor Portfolio": {"BTC": "250"}}
 ```
 
+Of course, there are many improvements to be made to this banking system and additional bugs to fix.
+However, for the sake of understanding and building on concepts of Python OOP, I will leave it as is.

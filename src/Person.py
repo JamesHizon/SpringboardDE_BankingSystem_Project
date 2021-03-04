@@ -1,5 +1,7 @@
 import json
 
+from Account import CheckingAccount, SavingsAccount
+
 
 class Person:
 
@@ -24,11 +26,11 @@ class Person:
                       "A new checking account will be created automatically for you.\n")
                 checking_account_pin_setup = input("Set up PIN Code: ")
                 self.json_dict["PIN"] = checking_account_pin_setup
-                account = CheckingAccount()
+                return CheckingAccount()
             else:
                 checking_account_pin = input("Enter PIN Code: ")
                 if self.json_dict["PIN"] == checking_account_pin:
-                    account = CheckingAccount()
+                    return CheckingAccount()
                 else:
                     print("Invalid PIN Code.")
         elif account_type_input == 2:
@@ -37,14 +39,13 @@ class Person:
                       "A new savings account will be created automatically for you.\n")
                 savings_account_pin_setup = input("Set up PIN Code: ")
                 self.json_dict["PIN"] = savings_account_pin_setup
-                account = SavingsAccount()
+                return SavingsAccount(Person.firstname, Person.lastname, Person.address)
             else:
                 savings_account_pin = input("Enter PIN Code: ")
                 if self.json_dict["PIN"] == savings_account_pin:
-                    account = SavingsAccount()
+                    return SavingsAccount(Person.firstname, Person.lastname, Person.address)
                 else:
                     print("Invalid PIN Code.")
-        return account
 
     def set_cash_available(self, new_cash_amount):
         self.cash_available = new_cash_amount

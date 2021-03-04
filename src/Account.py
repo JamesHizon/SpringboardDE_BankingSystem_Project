@@ -1,15 +1,29 @@
 import json
 
+from Service import Hizonhood, Loan, CreditCard
+
 
 class Account:
 
     def __init__(self):
+        """
+        We will re-enter same values from Person into Account class.
+        I cannot find an efficient way to transfer values from Person class at the moment.
+        Also, this approach of entering data both in Account and Person class
+        will also one person to fetch money from another person's account.
+        - This satisfies the condition:
+            1) What if one person trusts the other person such as a husband allowing his wife
+            to make withdrawals from his account).
+            2) What if one person has hired an investor to make solid investment decisions and has trusted the
+            investor with his/her information.
+        """
         self.balance = 0
         print("Welcome to James' Deposit & Withdrawal Machine!")
+        # Edit: Place this into the Banking_system_test.py file.
         self.firstname = input("Enter first name: ")
         self.lastname = input("Enter last name: ")
-        self.name = self.firstname + self.lastname
         self.address = input("Enter address: ")
+        self.name = self.firstname + self.lastname
         self.json_dict = {"Name": self.name, "Address": self.address, "Balance": self.balance}
 
     def withdraw(self):
@@ -42,7 +56,7 @@ class Account:
             investor_balance = float(input("Enter amount to deposit into Hizonhood: "))
             self.balance -= investor_balance
             self.json_dict["Balance"] = self.balance
-            service = Hizonhood(investor_balance)
+            return Hizonhood(investor_balance)
         elif service_input == 2:
             name = input("Enter name: ")
             account_no = int(input("Enter account no: "))
@@ -51,13 +65,12 @@ class Account:
             balance = float(input("Enter balance: "))
             self.balance -= balance
             self.json_dict["Balance"] = self.balance
-            service = CreditCard(name, account_no, expiration_date, cvv, balance)
+            return CreditCard(name, account_no, expiration_date, cvv, balance)
         elif service_input == 3:
             loan_amount = float(input("Enter loan amount: "))
             self.balance -= loan_amount
             self.json_dict["Balance"] = self.balance
-            service = Loan(loan_amount)
-        return service
+            return Loan(loan_amount)
 
 
 class CheckingAccount(Account):

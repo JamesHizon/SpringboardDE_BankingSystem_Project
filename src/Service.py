@@ -26,7 +26,7 @@ class Hizonhood(Service):
                           "Investor Portfolio": self.investment_portfolio}
 
     def invest(self, stock_ticker, amount):
-        self.investor_balance -= amount
+        self.investor_balance -= float(amount)
         self.json_dict["Investor Balance"] = self.investor_balance
         if stock_ticker in self.investment_portfolio.keys():
             self.investment_portfolio[stock_ticker] += amount
@@ -90,11 +90,15 @@ class CreditCard(Service):
 
 class Loan(Service):
 
-    def __init__(self, loan_amount, consumer_name):
-        self.name = consumer_name
+    def __init__(self, loan_amount):
+        self.name = input("Enter name of loan user:")
         self.loan_amount = loan_amount
         self.json_dict = {"Name": self.name, "Loan Amount": self.loan_amount}
 
-    def take_loan(self, customer_balance):
-        customer_balance -= self.loan_amount
-        return f"Loan of {self.loan_amount} has been taken!\nCustomer now has {round(customer_balance, 2)} left."
+    def take_loan(self):
+        """
+        Simple action: save loan data as JSON and print message.
+        """
+        with open("loan_data.json", "w") as loan_file:
+            json.dump(self.json_dict, loan_file)
+        return f"Loan of {self.loan_amount} has been taken!"
