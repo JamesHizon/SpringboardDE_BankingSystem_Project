@@ -113,5 +113,4 @@ The last part of the code will create a JSON file called "investment_data_file.j
 {"Investor Name": "James Hizon", "Investor Balance": 250.0, "Investor Portfolio": {"BTC": "250"}}
 ```
 
-Of course, there are many improvements to be made to this banking system and additional bugs to fix.
-However, for the sake of understanding and building on concepts of Python OOP, I will leave it as is.
+In addition, while working with the Customer and Employee classes, two files can be created in similar JSON format: customer_data.json and employee_data.json.
