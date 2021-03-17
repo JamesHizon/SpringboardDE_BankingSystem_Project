@@ -62,6 +62,10 @@ class Customer(Person):
     def __init__(self, firstname, lastname, address, cash_available, accounts_available=None):
         Person.__init__(self, firstname, lastname, address, cash_available)
         self.accounts_available = accounts_available
+        self.json_dict = {"Name": self.firstname + self.lastname,
+                          "Address": self.address,
+                          "Cash": self.cash_available,
+                          "Accounts": self.accounts_available}
 
     def get_customer_accounts(self):
         if self.accounts_available is None:
@@ -83,9 +87,10 @@ class Customer(Person):
         while more_input == 'Y':
             act_input = input("Enter user account: ")
             accounts_list.append(act_input)
+            more_input = input("Would you like to add more input?\nType 'Y' for Yes and 'N' for No.")
         self.accounts_available = accounts_list
         # List to dict
-        super(Customer, self).json_dict["Accounts"] = accounts_list
+        self.json_dict["Accounts"] = accounts_list
         return "Customer accounts set!"
 
     def customer_to_json(self):
@@ -94,7 +99,7 @@ class Customer(Person):
         to dump data into customer_file as our object.
         """
         with open("customer_data.json", "w") as customer_file:
-            json.dump(super(Customer, self).json_dict, customer_file)
+            json.dump(self.json_dict, customer_file)
         return "New JSON file created!"
 
     def customer_from_json(self):
@@ -107,19 +112,22 @@ class Customer(Person):
 class Employee(Person):
 
     def __init__(self, firstname, lastname, address, cash_available, salary=0):
-        Person.__init__(firstname, lastname, address, cash_available)
+        Person.__init__(self, firstname, lastname, address, cash_available)
         self.salary = salary
-        super(Employee, self).json_dict["Salary"] = self.salary
+        self.json_dict = {"Name": self.firstname + self.lastname,
+                          "Address": self.address,
+                          "Cash Available": self.cash_available,
+                          "Salary": salary}
 
     def increase_salary(self):
         increase_amount = float(input("Enter salary amount for increasing: "))
         self.salary += increase_amount
-        super(Employee, self).json_dict["Salary"] = self.salary
+        self.json_dict["Salary"] = self.salary
         return "New salary: {}".format(self.salary)
 
     def employee_to_json(self):
         with open("employee_data.json", "w") as employee_file:
-            json.dump(super(Employee, self).json_dict, employee_file)
+            json.dump(self.json_dict, employee_file)
         return "New JSON file created!"
 
     def employee_from_json(self):

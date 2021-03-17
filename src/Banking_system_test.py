@@ -47,17 +47,23 @@ if __name__ == '__main__':
             person.set_customer_accounts()
             person.customer_to_json()
         elif customer_req == 3:
-            person.customer_from_json()  # may need try/except clause
+            try:
+                person.customer_from_json()  # may need try/except clause
+            except ValueError:
+                print("No JSON file found.")
         elif customer_req == 4:
             print("Did not perform an action.")
     elif person_type == 2:
         # Employee actions
-        person = Employee(first_name, last_name, address, 0)
         cash_input = input("Currently, you have no cash available.\n"
                            "Enter 'Y' if this is the case.\n"
                            "Otherwise, enter new cash amount: ")
+        salary_input = int(input("Enter current salary: "))
+        # Create Employee object to perform actions
+        person = Employee(first_name, last_name, address, cash_input, salary_input)
         if cash_input != 'Y':
-            person = person.set_cash_available(cash_input)
+            cash_input = int(cash_input)
+            person.set_cash_available(cash_input)
         # Salary and JSON file requests
         employee_req = int(input("Enter 1 to increase salary\n"
                                  "Enter 2 to request employee data from JSON (if exists)\n"
@@ -66,7 +72,10 @@ if __name__ == '__main__':
             person.increase_salary()
             person.employee_to_json()  # Save file in JSON format
         elif employee_req == 2:
-            person.employee_from_json()  # May need try/except clause
+            try:
+                person.employee_from_json()  # May need try/except clause
+            except ValueError:
+                print("No JSON file found.")
         elif employee_req == 3:
             print("Did not perform action.")
 
@@ -150,4 +159,3 @@ if __name__ == '__main__':
         print("Did not visit bank.\n"
               "You will not be able to use any services without first visiting the bank "
               "and performing an action.")
-
