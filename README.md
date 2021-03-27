@@ -19,8 +19,19 @@ python3 Banking_system_test.py
 ```
 
 A Python Script will then ask for the user to provide input. 
-The following includes full implementation of all the main base classes 
-with a corresponding child class:
+The following includes full implementation of all the main base classes with a corresponding child class. The given script basically requests information about the customer (first name, last name and address), then asks if the person is a Customer or an Employee, and asks if the person has any available cash.
+In the given example, we work with the Customer class and there is an option to set or get information in regards to customer accounts.
+Another option is to extract the customer from a JSON file once the customer accounts have been set.
+Following this, a request is made to see if one wants to visit the bank to either withdraw or make a deposit.
+So, a request is made to see if the customer wants to use his or her checking account.
+Based on criteria of not having a checking account available already, the customer has to set up a PIN Code for future access to the account.
+Then, more information about the customer is requested, and he or she can make a deposit or withdrawal.
+The customer can continue in this direction to make multiple deposits or withdrawals, and even display current balance.
+Once the customer has performed an action, the customer has the option to use a given service.
+The Service, Hizonhood, is then selected, where one can basically enter details about their investment made which is stored in a JSON file.
+Afterwards, the customer has the option to take out a loan or use a credit card.
+For the sake of simplicity, we only work with one of the services.
+
 
 
 ```
