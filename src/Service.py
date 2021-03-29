@@ -3,6 +3,10 @@ import json
 
 class Service:
 
+    """
+    Purpose of inheriting from Service class is to be able to check out other services.
+    I try to create very simple methods as well for sake of building my understanding of OOP.
+    """
     def __init__(self):
         self.services_list = "Hizonhood\nLoan\nCreditCard"
 
